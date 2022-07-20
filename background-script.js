@@ -23,6 +23,7 @@ chrome.action.onClicked.addListener(async tab => {
     
     chrome.storage.sync.get(['hiddenItemsList'], function(result) {
         hiddenItemsList = JSON.parse(result.hiddenItemsList);
+        hiddenItemsList = Object.values(hiddenItemsList);
         console.log(hiddenItemsList);
     });
 
@@ -42,13 +43,28 @@ chrome.action.onClicked.addListener(async tab => {
             target: {
                 tabId: tab.id,
             },
-            func: () => {
+            args: [ hiddenItemsList ],
+            func: (hiddenItemsList) => {
                 document.querySelectorAll('.s-item a.s-item__link').forEach(element => {
                     let href = element.getAttribute('href');
                     href = href.split('/');
                     let itemID = href[href.length-1].split('?')[0];
-                    console.log(itemID);
+
+                    if(hiddenItemsList.includes(parseInt(itemID))) {
+                        console.log("Item " + itemID + " is in removelist!");
+                        console.log(element.closest('.s-item'));
+                        element.closest('.s-item').innerHTML = 'REMOVED BY EBAY ITEM REMOVER';
+                    } else {
+                        let parent = element.closest('.s-item');
+
+                        console.log(itemID);
+                        console.log(element.closest('.s-item'));
+
+                        parent.insertAdjacentHTML('beforeend', '<span class="s-item__watchheart at-corner s-item__watchheart--watch" style="right: 30px; bottom: 10px;"><a aria-label="remove item" href="#"><span class="s-item__watchheart-icon"><svg class="icon icon--save-small" focusable="false" aria-hidden="true"><circle cx="10" cy="9" r="6.5" stroke="black" stroke-width="2" fill="none"></circle></svg><svg class="icon icon--save-selected-small" focusable="false" aria-hidden="true"><use xlink:href="#icon-save-selected-small"></use></svg></span></a></span>')
+                    }
                 });
+
+                console.log(hiddenItemsList);
             }
         });
     } catch (error) {
