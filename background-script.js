@@ -20,16 +20,12 @@ chrome.runtime.onInstalled.addListener(function(details) {
 
 chrome.action.onClicked.addListener(async tab => {
     var hiddenItemsList;
+
+    hiddenItemsList = await getHiddenItemsList();
     
-    chrome.storage.sync.get(['hiddenItemsList'], function(result) {
-        hiddenItemsList = JSON.parse(result.hiddenItemsList);
-        hiddenItemsList = Object.values(hiddenItemsList);
-        console.log(hiddenItemsList);
+    await removeItems();
 
-        removeItems(hiddenItemsList, tab);
-
-        addButton(hiddenItemsList, tab);
-    });
+    addButton();
 
     // try {
     //     await chrome.scripting.insertCSS({
@@ -62,10 +58,28 @@ chrome.webNavigation.onCompleted.addListener(function() {
     }]
 });
 
-async function removeItems(hiddenItemsList, tab) {
+const getHiddenItemsList = async () => {
+    var hiddenItemsList;
+
+    return new Promise((resolve, reject) => {
+        chrome.storage.sync.get(['hiddenItemsList'], async (result) => {
+            hiddenItemsList = JSON.parse(result.hiddenItemsList);
+            hiddenItemsList = Object.values(hiddenItemsList);
+
+            resolve(hiddenItemsList);
+        });
+    });
+
     console.log(hiddenItemsList);
 
-    console.log(JSON.stringify(hiddenItemsList));
+    return hiddenItemsList;
+}
+
+async function removeItems() {
+    let queryOptions = { active: true, lastFocusedWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
+
+    let hiddenItemsList = await getHiddenItemsList();
 
     try {
         await chrome.scripting.executeScript({
@@ -101,7 +115,12 @@ async function removeItems(hiddenItemsList, tab) {
     }
 }
 
-async function addButton(hiddenItemsList, tab) {
+async function addButton() {
+    let queryOptions = { active: true, lastFocusedWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
+
+    let hiddenItemsList = await getHiddenItemsList();
+
     try {
         await chrome.scripting.executeScript({
             target: {
@@ -126,7 +145,8 @@ async function addButton(hiddenItemsList, tab) {
                         }
 
                         chrome.storage.sync.set( {'hiddenItemsList': JSON.stringify(hiddenItemsList)}, (parent) => {
-                            parent.innerHTML = "REMOVED BY EBAY ITEM REMOVER";
+                            // parent.innerHTML = "REMOVED BY EBAY ITEM REMOVER";
+
                         } );
 
                         event.preventDefault();
