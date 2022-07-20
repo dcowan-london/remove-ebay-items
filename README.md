@@ -3,7 +3,7 @@ This Chrome extension allows you to hide items from eBay search results.
 
 ## Notes
 * Extension currently only works in Chrome
-* Extension currently only works for eBay UK (https://ebay.co.uk)
+* Extension currently only works for eBay UK (https://ebay.co.uk) and eBay US (https://ebay.com)
 * Currently, the only way to make a hidden item show again is to uninstall and reinstall the extension. This will reset it and make all items previously hidden show up in search results again.
 * **IMPORTANT: If you currently have version 0.0.1, you must remove the extension before installing the new update**
 
