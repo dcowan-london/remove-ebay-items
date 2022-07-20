@@ -22,5 +22,5 @@
 
     "permissions": [ "notifications", "webNavigation", "scripting", "storage" ],
 
-    "host_permissions": [ "*://*.ebay.co.uk/*" ]
+    "host_permissions": [ "*://*.ebay.co.uk/*", "*://*.ebay.com/*" ]
 }
