@@ -5,7 +5,27 @@
     // let content = browser.i18n.getMessage("notificationContent", message.url);
 }) */
 
+chrome.runtime.onInstalled.addListener(function(details) {
+
+    if(details.reason == "install"){
+        chrome.storage.sync.set({
+            'hiddenItemsList': '{}'
+        })
+
+        console.log('Successfully initialised new install');
+    } else if ( details.reason == "update" ) {
+        console.log('Extension updated');
+    }
+})
+
 chrome.action.onClicked.addListener(async tab => {
+    var hiddenItemsList;
+    
+    chrome.storage.sync.get(['hiddenItemsList'], function(result) {
+        hiddenItemsList = JSON.parse(result.hiddenItemsList);
+        console.log(hiddenItemsList);
+    });
+
     try {
         await chrome.scripting.insertCSS({
             target: {

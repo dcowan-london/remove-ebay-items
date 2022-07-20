@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "eBay Item Remove - DEVELOPMENT BUILD",
-    "version": "0.0.1",
+    "version": "0.0.2",
 
     "description": "Remove items you don't want to see from eBay",
 
@@ -20,7 +20,7 @@
         "service_worker": "background-script.js"
     },
 
-    "permissions": [ "notifications", "webNavigation", "scripting" ],
+    "permissions": [ "notifications", "webNavigation", "scripting", "storage" ],
 
     "host_permissions": [ "*://*.ebay.co.uk/*" ]
 }
