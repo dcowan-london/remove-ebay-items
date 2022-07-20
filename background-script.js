@@ -1,10 +1,3 @@
-/* chrome.browserAction.onClicked.addListener(function () {
-    console.log("Test");
-
-    // let title = browser.i18n.getMessage("notificationTitle");
-    // let content = browser.i18n.getMessage("notificationContent", message.url);
-}) */
-
 chrome.runtime.onInstalled.addListener(function(details) {
 
     if(details.reason == "install"){
@@ -38,12 +31,6 @@ chrome.action.onClicked.addListener(async tab => {
     //     console.error('CSS insert failed! ' + error);
     // }
 });
-
-// document.getElementsByClassName('ebayitemremover-extension_removeitem').forEach(element => {
-//     element.addEventListener('click', (elm) => {
-//         console.log(elm.getAttribute('ebayitemremover-extension_itemid') + ' clicked');
-//     });
-// })
 
 chrome.webNavigation.onCompleted.addListener(function() {
     chrome.notifications.create({
