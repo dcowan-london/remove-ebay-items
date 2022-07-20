@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "eBay Item Remove - DEVELOPMENT BUILD",
-    "version": "0.0.2",
+    "version": "0.0.3",
 
     "description": "Remove items you don't want to see from eBay",
 
