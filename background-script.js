@@ -40,8 +40,8 @@ chrome.webNavigation.onCompleted.addListener(function() {
     chrome.notifications.create({
         "type": "basic",
         "iconUrl": "icons/ebay-48.png",
-        "title": 'My Notification',
-        "message": 'Hi, this is eBay!'
+        "title": 'eBay Item Remover',
+        "message": "eBay Item Remover is running - and you've just loaded an eBay page!"
     });
 }, {
     url: [{
