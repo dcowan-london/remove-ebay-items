@@ -69,10 +69,6 @@ const getHiddenItemsList = async () => {
             resolve(hiddenItemsList);
         });
     });
-
-    console.log(hiddenItemsList);
-
-    return hiddenItemsList;
 }
 
 async function removeItems() {
@@ -144,9 +140,9 @@ async function addButton() {
                             return;
                         }
 
-                        chrome.storage.sync.set( {'hiddenItemsList': JSON.stringify(hiddenItemsList)}, (parent) => {
+                        chrome.storage.sync.set( {'hiddenItemsList': JSON.stringify(hiddenItemsList)}, function() {
                             // parent.innerHTML = "REMOVED BY EBAY ITEM REMOVER";
-
+                            alert("Done\nYou need to click the extension icon for this to take effect")
                         } );
 
                         event.preventDefault();
