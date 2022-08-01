@@ -20,6 +20,8 @@ chrome.action.onClicked.addListener(async tab => {
 
     addButton();
 
+    readdItem();
+
     // try {
     //     await chrome.scripting.insertCSS({
     //         target: {
@@ -79,7 +81,7 @@ async function removeItems() {
                     if(hiddenItemsList.includes(parseInt(itemID))) {
                         console.log("Item " + itemID + " is in removelist!");
                         console.log(element.closest('.s-item'));
-                        element.closest('.s-item').innerHTML = 'REMOVED BY EBAY ITEM REMOVER';
+                        element.closest('.s-item').innerHTML = "REMOVED BY EBAY ITEM REMOVER <a href='#' class='ebayitemremover-extension_readditem' ebayitemremover-extension_itemid='" + itemID + "'>Readd</a>";
                     } else {
                         let parent = element.closest('.s-item');
 
@@ -140,5 +142,27 @@ async function addButton() {
         );
     } catch (error) {
         console.log("Error adding removal button! " + error);
+    }
+}
+
+async function readdItem(itemID) {
+    let queryOptions = { active: true, lastFocusedWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
+
+    try {
+        await chrome.scripting.executeScript({
+            target: {
+                tabId: tab.id,
+            },
+            func: () => {
+                Array.from(document.getElementsByClassName('ebayitemremover-extension_readditem')).forEach(element => {
+                    element.addEventListener('click', (event) => {
+                        let itemID = parseInt(parent.getAttribute('ebayitemremover-extension_itemid'));
+                    })
+                });
+            }
+        })
+    } catch (error) {
+        console.log("Error adding readd! " + error);
     }
 }
