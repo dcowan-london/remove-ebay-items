@@ -145,19 +145,35 @@ async function addButton() {
     }
 }
 
-async function readdItem(itemID) {
+async function readdItem() {
     let queryOptions = { active: true, lastFocusedWindow: true };
     let [tab] = await chrome.tabs.query(queryOptions);
+
+    let hiddenItemsList = await getHiddenItemsList();
 
     try {
         await chrome.scripting.executeScript({
             target: {
                 tabId: tab.id,
             },
-            func: () => {
+            args: [ hiddenItemsList ],
+            func: (hiddenItemsList) => {
                 Array.from(document.getElementsByClassName('ebayitemremover-extension_readditem')).forEach(element => {
                     element.addEventListener('click', (event) => {
-                        let itemID = parseInt(parent.getAttribute('ebayitemremover-extension_itemid'));
+                        let itemID = parseInt(event.currentTarget.getAttribute('ebayitemremover-extension_itemid'));
+
+                        const index = hiddenItemsList.indexOf(itemID);
+                        try {
+                            hiddenItemsList.splice(index, 1);
+                        } catch (error) {
+                            alert("failed removing " + itemID);
+                        }
+
+                        chrome.storage.sync.set( {'hiddenItemsList': JSON.stringify(hiddenItemsList)}, function() {
+                            alert("Done\nYou need to reload the page for this to take effect");
+                        });
+                        event.preventDefault();
+                        event.preventDefault();
                     })
                 });
             }
